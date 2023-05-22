@@ -2,6 +2,8 @@ import { Product, ProductDBResponse } from "../models/Product";
 import { ProductDatabase } from "../database/ProductDatabase";
 import { ProductInputDTO } from "../dtos/getProduct.dto";
 import { CreateProductInputDTO } from "../dtos/createProduct.dto";
+import { EditProductInputDTO } from "../dtos/editProduct.dto";
+import { DeleteProductInputDTO } from "../dtos/deleteProduct.dto";
 
 export class ProductBusiness{
     constructor(
@@ -22,22 +24,6 @@ export class ProductBusiness{
     public createProduct = async (input: CreateProductInputDTO) => {
         const { id, name, price, brandId } = input
 
-        if(typeof id !== "string"){
-            throw new Error("id precisa ser string")
-        }
-
-        if(typeof name !== "string"){
-            throw new Error("name precisa ser string")
-        }
-
-        if(typeof price !== "number"){
-            throw new Error("price precisa ser number")
-        }
-
-        if(typeof brandId !== "string"){
-            throw new Error("brandId precisa ser string")
-        }
-
         const idExists = await this.productDatabase.getProductById(id)
 
         if(idExists){
@@ -48,5 +34,46 @@ export class ProductBusiness{
 
         const result = await this.productDatabase.createProduct(newProduct)
 
+        return "Produto criado com sucesso!"
+
+    }
+
+    public editProduct = async (input: EditProductInputDTO): Promise<string> => {
+        const { id, name, price, brandId } = input
+
+        const isProductIdValid = await this.productDatabase.getProductById(id)
+
+        if(!isProductIdValid){
+            throw new Error("id do produto não existe")
+        }
+
+        const product = new Product( id, name || isProductIdValid.name, price || isProductIdValid.price, brandId || isProductIdValid.brand_id)
+
+        const productDB: ProductDBResponse = {
+            id: product.getId(),
+            name: product.getName(),
+            price: product.getPrice(),
+            brand_id: product.getBrandId()
+        }
+
+        await this.productDatabase.editProductById(productDB)
+
+        const result = "Produto editado com sucesso!"
+        return result
+
+    }
+
+    public deleteProduct = async (input: DeleteProductInputDTO): Promise<string> => {
+        const { id } = input
+
+        const isProductIdValid = await this.productDatabase.getProductById(id)
+
+        if(!isProductIdValid){
+            throw new Error("id do produto não encontrado")
+        }
+
+        await this.productDatabase.deleteProductById(id)
+
+        return "Produto deletado com sucesso!"
     }
 }
