@@ -11,3 +11,5 @@ const productController = new ProductController(
 
 productRouter.get("/", productController.getProduct)
 productRouter.post("/", productController.createProduct)
+productRouter.put("/:id", productController.editProduct)
+productRouter.delete("/:id", productController.deleteProduct)

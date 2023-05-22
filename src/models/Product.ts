@@ -5,6 +5,31 @@ export class Product{
         private price: number,
         private brandId: string
     ){}
+
+    public getDBModel(){
+        return{
+        id: this.id,
+        name: this.name,
+        price: this.price,
+        brand_id: this.brandId
+        }
+    }
+
+    public getId(): string{
+        return this.id
+    }
+
+    public getName(): string{
+        return this.name
+    }
+
+    public getPrice(): number{
+        return this.price
+    }
+
+    public getBrandId(): string{
+        return this.brandId
+    }
 }
 
 export interface ProductDBResponse{
@@ -13,3 +38,4 @@ export interface ProductDBResponse{
     price: number,
     brand_id: string
 }
+
