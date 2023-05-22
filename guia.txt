@@ -1,0 +1,10 @@
+Aula de revisão
+
+1 - configurar o express
+2 - criação de configuração do banco de dados e suas tabelas
+3 - configuração e criação das rotas
+4 - criação e configuração do ProductController
+5 - criação e configuração do ProductBusiness
+6 - criação e configuração do ProductDatabase
+7 - criação do endpoint de pegar produtos
+8 -
